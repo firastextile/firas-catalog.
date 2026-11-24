@@ -127,6 +127,11 @@ select{width:100%;height:46px;border-radius:12px;border:2px solid var(--line);ba
 .pill.bad{background:var(--bad);color:#fff}
 .pill.new{background:#e0314b;color:#fff}
 .dprice{font-size:30px;font-weight:900;color:var(--goldd)}
+.nophoto{height:210px;background:linear-gradient(160deg,var(--teal),var(--teal2));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--gold2);font-size:13px}
+.nophoto img{width:84px;height:84px;border-radius:50%;object-fit:cover;border:3px solid var(--gold)}
+.dsec{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:14px}
+.dsec h4{font-size:16px;font-weight:900;color:var(--teal);margin-bottom:6px;border-right:4px solid var(--gold);padding-right:8px}
+.dsec p{font-size:14px;line-height:1.9;color:var(--text);white-space:pre-line;overflow-wrap:anywhere}
 .rbox{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:12px;text-align:center}
 .rbox b{display:block;font-size:14px;color:var(--teal);margin-bottom:6px}
 .stars{display:flex;justify-content:center;gap:6px;direction:ltr}
@@ -268,10 +273,12 @@ function openItem(id,push){
  var it=find(id);if(!it)return;cur=it;dIdx=0;dQty=1;hit('view',id);
  var g=it.images.length?it.images.map(function(u){return '<img src="'+u+'" alt="'+esc(it.name)+'">'}).join(''):'<div class="noimg">بدون صورة</div>';
  var th=it.images.length>1?'<div class="thumbs" id="thumbs">'+it.images.map(function(u,k){return '<img data-t="'+k+'" class="'+(k?'':'on')+'" src="'+u+'" alt="">'}).join('')+'</div>':'';
- var h='<div class="dv"><div class="dph"><div class="gal" id="dgal">'+g+'</div><button class="dback" id="back" aria-label="رجوع">'+IC.back+'</button>'+(it.images.length>1?'<span class="count" id="dcount">1/'+it.images.length+'</span>':'')+th+'</div>'+
+ var top=it.images.length?'<div class="gal" id="dgal">'+g+'</div>':'<div class="nophoto">'+(D.store.logo?'<img src="'+D.store.logo+'" alt="">':'')+'<span>بدون صورة</span></div>';
+ var h='<div class="dv"><div class="dph">'+top+'<button class="dback" id="back" aria-label="رجوع">'+IC.back+'</button>'+(it.images.length>1?'<span class="count" id="dcount">1/'+it.images.length+'</span>':'')+th+'</div>'+
   '<div class="dsheet"><div class="dtop"><div class="dname">'+esc(it.name)+'</div><div class="drate" id="drate">'+ratingTxt(it.id)+'</div></div>'+
   '<div class="chiprow"><span class="pill cat">'+esc(it.cat)+'</span><span class="pill '+(it.inStock?'ok':'bad')+'">'+(it.inStock?'✓ متوفر':'نفد')+'</span>'+(isNew(it)?'<span class="pill new">جديد</span>':'')+'</div>'+
   '<div class="dprice">'+it.price+' '+esc(D.store.currency)+'</div>';
+ if(it.desc)h+='<div class="dsec"><h4>تفاصيل المنتج</h4><p>'+esc(it.desc)+'</p></div>';
  if(it.inStock&&it.colors.length)h+='<select id="dc"><option value="">اختر اللون</option>'+it.colors.map(function(x){return '<option>'+esc(x)+'</option>'}).join('')+'</select>';
  if(it.inStock&&it.sizes.length)h+='<select id="ds"><option value="">اختر المقاس</option>'+it.sizes.map(function(x){return '<option>'+esc(x)+'</option>'}).join('')+'</select>';
  if(D.api)h+='<div class="rbox"><b>قيّم هذا الصنف</b><div class="stars" id="stars">'+stars(it.id)+'</div></div>';
